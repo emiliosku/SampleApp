@@ -809,7 +809,7 @@ static void User_Process(void)
  80007d2:	781b      	ldrb	r3, [r3, #0]
  80007d4:	b193      	cbz	r3, 80007fc <MX_X_CUBE_BLE1_Process+0xac>
       /* Send a toggle command to the remote device */
-      uint8_t data[20] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J'};
+      uint8_t data[20] = {'H','E','L','L','O',' ','W','O','R','L','D',' ',' ',' ',' ','I','d','n','e','o'};
  80007d6:	4b17      	ldr	r3, [pc, #92]	; (8000834 <MX_X_CUBE_BLE1_Process+0xe4>)
  80007d8:	aa01      	add	r2, sp, #4
  80007da:	f103 0610 	add.w	r6, r3, #16
@@ -1986,7 +1986,7 @@ void Make_Connection(void)
 }
  8000e34:	b00c      	add	sp, #48	; 0x30
  8000e36:	bd70      	pop	{r4, r5, r6, pc}
-    const char local_name[] = {AD_TYPE_COMPLETE_LOCAL_NAME,'B','l','u','e','N','R','G','_','C','h','a','t'};
+    const char local_name[] = {AD_TYPE_COMPLETE_LOCAL_NAME,'M','e','d','i','r','i','o','_','C','h','a','t'};
  8000e38:	4b15      	ldr	r3, [pc, #84]	; (8000e90 <Make_Connection+0xb0>)
  8000e3a:	462a      	mov	r2, r5
  8000e3c:	f103 0608 	add.w	r6, r3, #8
@@ -2003,7 +2003,7 @@ void Make_Connection(void)
  8000e54:	6020      	str	r0, [r4, #0]
     hci_le_set_scan_resp_data(0,NULL);
  8000e56:	2100      	movs	r1, #0
-    const char local_name[] = {AD_TYPE_COMPLETE_LOCAL_NAME,'B','l','u','e','N','R','G','_','C','h','a','t'};
+    const char local_name[] = {AD_TYPE_COMPLETE_LOCAL_NAME,'M','e','d','i','r','i','o','_','C','h','a','t'};
  8000e58:	7123      	strb	r3, [r4, #4]
     hci_le_set_scan_resp_data(0,NULL);
  8000e5a:	4608      	mov	r0, r1

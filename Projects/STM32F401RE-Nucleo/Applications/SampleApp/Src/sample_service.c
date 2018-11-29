@@ -168,7 +168,7 @@ void Make_Connection(void)
     
   } else  {
     
-    const char local_name[] = {AD_TYPE_COMPLETE_LOCAL_NAME,'M','e','r','i','d','i','o','_','C','h','a','t'};
+    const char local_name[] = {AD_TYPE_COMPLETE_LOCAL_NAME,'M','e','d','i','r','i','o','_','C','h','a','t'};
     
     /* disable scan response */
     hci_le_set_scan_resp_data(0,NULL);
@@ -229,6 +229,8 @@ void startReadRXCharHandle(void)
 void receiveData(uint8_t* data_buffer, uint8_t Nb_bytes)
 {
 	int i;
+
+	HAL_UART_Transmit(&hComHandle[COM1], data_buffer, Nb_bytes, COM_POLL_TIMEOUT);
 
   for(i = 0; i < Nb_bytes; i++) {
     printf("%c", data_buffer[i]);
