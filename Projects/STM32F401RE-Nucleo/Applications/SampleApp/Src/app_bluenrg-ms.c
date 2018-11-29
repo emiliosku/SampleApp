@@ -285,7 +285,7 @@ static void User_Process(void)
     
     if(connected && notification_enabled){
       /* Send a toggle command to the remote device */
-      uint8_t data[20] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J'};
+      uint8_t data[20] = {'H','E','L','L','O',' ','W','O','R','L','D',' ',' ',' ',' ','I','d','n','e','o'};
       sendData(data, sizeof(data));
       
       //BSP_LED_Toggle(LED2);  // toggle the LED2 locally.
