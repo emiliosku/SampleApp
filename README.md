@@ -1,0 +1,1 @@
+STM32CubeExpansion_BLE1_4.1.0
