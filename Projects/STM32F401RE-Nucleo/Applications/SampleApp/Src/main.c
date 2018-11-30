@@ -107,7 +107,7 @@ int main(void)
   MX_X_CUBE_BLE1_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_GPIO_TogglePin(LED2_GPIO_PORT, LED2_GPIO_PIN);
+  //HAL_GPIO_TogglePin(LED2_GPIO_PORT, LED2_GPIO_PIN);
 
   /* USER CODE END 2 */
 
