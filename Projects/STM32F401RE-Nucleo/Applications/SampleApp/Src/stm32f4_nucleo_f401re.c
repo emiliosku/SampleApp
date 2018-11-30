@@ -117,6 +117,7 @@ static const IRQn_Type BUTTON_IRQn[BUTTONn] = {KEY_BUTTON_EXTI_IRQn};
 EXTI_HandleTypeDef *hExtiButtonHandle[BUTTONn];
 USART_TypeDef* COM_USART[COMn] = {COM1_UART};
 UART_HandleTypeDef hComHandle[COMn];
+uint8_t RxBuffer[20];
 #if (USE_COM_LOG == 1)
 static COM_TypeDef COM_ActiveLogPort;
 #endif
@@ -391,6 +392,8 @@ int32_t BSP_COM_Init(COM_TypeDef COM)
 
   MX_USART2_UART_Init(&hComHandle[COM]);
 
+  HAL_UART_Receive_IT(&hComHandle[COM_ActiveLogPort], RxBuffer, 1);
+
   return BSP_ERROR_NONE;
 }
 
@@ -475,6 +478,9 @@ static void USART2_MspInit(UART_HandleTypeDef* uartHandle)
 
   /* USER CODE BEGIN USART2_MspInit 1 */
 
+    HAL_NVIC_SetPriority(USART2_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(USART2_IRQn);
+
   /* USER CODE END USART2_MspInit 1 */
 }
 
@@ -495,6 +501,12 @@ static void USART2_MspDeInit(UART_HandleTypeDef* uartHandle)
   /* USER CODE BEGIN USART2_MspDeInit 1 */
 
   /* USER CODE END USART2_MspDeInit 1 */
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *uartHandle)
+{
+	HAL_GPIO_TogglePin(LED2_GPIO_PORT, LED2_GPIO_PIN);
+	HAL_UART_Receive_IT(&hComHandle[COM_ActiveLogPort], RxBuffer, 1);
 }
 
 #if (USE_HAL_UART_REGISTER_CALLBACKS == 1) 
