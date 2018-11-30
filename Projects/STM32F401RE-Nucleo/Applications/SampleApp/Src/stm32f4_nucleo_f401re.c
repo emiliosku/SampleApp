@@ -51,6 +51,7 @@
 #include "stm32f4xx_it.h"
 #include "stm32f4_nucleo_f401re.h"
 #include "stm32f4xx_hal_exti.h"
+#include "sample_service.h"
 
 /** @defgroup BSP BSP
  * @{
@@ -118,6 +119,8 @@ EXTI_HandleTypeDef *hExtiButtonHandle[BUTTONn];
 USART_TypeDef* COM_USART[COMn] = {COM1_UART};
 UART_HandleTypeDef hComHandle[COMn];
 uint8_t RxBuffer[20];
+uint8_t BLE_Buffer[20];
+uint8_t BytesReceived = 0;
 #if (USE_COM_LOG == 1)
 static COM_TypeDef COM_ActiveLogPort;
 #endif
@@ -505,7 +508,19 @@ static void USART2_MspDeInit(UART_HandleTypeDef* uartHandle)
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *uartHandle)
 {
-	HAL_GPIO_TogglePin(LED2_GPIO_PORT, LED2_GPIO_PIN);
+	//Uncomment for debugging purposes
+	//HAL_GPIO_TogglePin(LED2_GPIO_PORT, LED2_GPIO_PIN);
+	if(RxBuffer == (uint8_t*)"\r\n")
+	{
+		BytesReceived = 0;
+		HAL_UART_Transmit(&hComHandle[COM_ActiveLogPort], BLE_Buffer, sizeof(BLE_Buffer), COM_POLL_TIMEOUT);
+		HAL_UART_Transmit(&hComHandle[COM_ActiveLogPort], (uint8_t*)"\n", 1, COM_POLL_TIMEOUT);
+	}
+	else
+	{
+		BLE_Buffer[BytesReceived] = RxBuffer[0];
+		BytesReceived++;
+	}
 	HAL_UART_Receive_IT(&hComHandle[COM_ActiveLogPort], RxBuffer, 1);
 }
 
