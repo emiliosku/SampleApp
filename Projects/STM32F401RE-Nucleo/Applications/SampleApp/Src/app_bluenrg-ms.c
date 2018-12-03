@@ -287,7 +287,9 @@ static void User_Process(void)
   /* Check if there is data available */
   if (DataAvailable)
   {
+		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
 		sendData(BLE_Buffer, BytesReceived);
+		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
 		BytesReceived = 0;
 		DataAvailable = FALSE;
   } 

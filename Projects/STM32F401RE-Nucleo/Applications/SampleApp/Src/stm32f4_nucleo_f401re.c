@@ -171,8 +171,13 @@ int32_t BSP_LED_Init(Led_TypeDef Led)
   gpio_init_structure.Pin   = LED_GPIO_PIN [Led];
   HAL_GPIO_Init(LED_GPIO_PORT [Led], &gpio_init_structure); 
   
+  //Init data rate pin
+  gpio_init_structure.Pin   = GPIO_PIN_9;
+  HAL_GPIO_Init(GPIOC, &gpio_init_structure);
+
   /* By default, turn off LED */
   HAL_GPIO_WritePin(LED_GPIO_PORT [Led], LED_GPIO_PIN [Led], GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_RESET);
   
   return BSP_ERROR_NONE;
 }
