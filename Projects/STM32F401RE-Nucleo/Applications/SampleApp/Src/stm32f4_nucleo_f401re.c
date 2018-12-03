@@ -118,9 +118,10 @@ static const IRQn_Type BUTTON_IRQn[BUTTONn] = {KEY_BUTTON_EXTI_IRQn};
 EXTI_HandleTypeDef *hExtiButtonHandle[BUTTONn];
 USART_TypeDef* COM_USART[COMn] = {COM1_UART};
 UART_HandleTypeDef hComHandle[COMn];
-uint8_t RxBuffer[20];
-uint8_t BLE_Buffer[20];
-uint8_t BytesReceived = 0;
+uint8_t RxBuffer[1];
+extern uint8_t BytesReceived;
+extern uint8_t BLE_Buffer[20];
+extern uint8_t DataAvailable;
 #if (USE_COM_LOG == 1)
 static COM_TypeDef COM_ActiveLogPort;
 #endif
@@ -508,18 +509,17 @@ static void USART2_MspDeInit(UART_HandleTypeDef* uartHandle)
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *uartHandle)
 {
-	//Uncomment for debugging purposes
-	//HAL_GPIO_TogglePin(LED2_GPIO_PORT, LED2_GPIO_PIN);
-	if(RxBuffer == (uint8_t*)"\r\n")
+	if(RxBuffer[0] == '#')
 	{
-		BytesReceived = 0;
-		HAL_UART_Transmit(&hComHandle[COM_ActiveLogPort], BLE_Buffer, sizeof(BLE_Buffer), COM_POLL_TIMEOUT);
-		HAL_UART_Transmit(&hComHandle[COM_ActiveLogPort], (uint8_t*)"\n", 1, COM_POLL_TIMEOUT);
+		DataAvailable = TRUE;
 	}
 	else
 	{
-		BLE_Buffer[BytesReceived] = RxBuffer[0];
-		BytesReceived++;
+		if(BytesReceived < sizeof(BLE_Buffer))
+		{
+			BLE_Buffer[BytesReceived] = RxBuffer[0];
+			BytesReceived++;
+		}
 	}
 	HAL_UART_Receive_IT(&hComHandle[COM_ActiveLogPort], RxBuffer, 1);
 }

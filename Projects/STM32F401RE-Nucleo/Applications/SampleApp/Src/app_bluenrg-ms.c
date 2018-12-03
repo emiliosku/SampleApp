@@ -75,6 +75,10 @@ extern volatile uint8_t end_read_rx_char_handle;
 
 /* USER CODE BEGIN PV */
 
+extern uint8_t DataAvailable;
+extern uint8_t BLE_Buffer[20];
+extern uint8_t BytesReceived;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -106,6 +110,8 @@ void MX_X_CUBE_BLE1_Init(void)
   /* USER CODE END SV */
   
   /* USER CODE BEGIN X_CUBE_BLE1_Init_PreTreatment */
+
+	DataAvailable = FALSE;
   
   /* USER CODE END X_CUBE_BLE1_Init_PreTreatment */
 
@@ -278,21 +284,12 @@ static void User_Process(void)
     }
   }  
 
-  /* Check if the user has pushed the button */  
-  if (BSP_PB_GetState(BUTTON_KEY) == !user_button_init_state)
+  /* Check if there is data available */
+  if (DataAvailable)
   {
-    while (BSP_PB_GetState(BUTTON_KEY) == !user_button_init_state);
-    
-    if(connected && notification_enabled){
-      /* Send a toggle command to the remote device */
-      uint8_t data[20] = {'H','E','L','L','O',' ','W','O','R','L','D',' ',' ',' ',' ','I','d','n','e','o'};
-      sendData(data, sizeof(data));
-      
-      //BSP_LED_Toggle(LED2);  // toggle the LED2 locally.
-                               // If uncommented be sure BSP_LED_Init(LED2) is
-                               // called in main().
-                               // E.g. it can be enabled for debugging.
-    }
+		sendData(BLE_Buffer, BytesReceived);
+		BytesReceived = 0;
+		DataAvailable = FALSE;
   } 
 }
 

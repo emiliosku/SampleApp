@@ -76,6 +76,10 @@ uint16_t sampleServHandle, TXCharHandle, RXCharHandle;
 extern uint8_t bnrg_expansion_board;
 extern BLE_RoleTypeDef BLE_Role;
 extern UART_HandleTypeDef hComHandle[COMn];
+
+uint8_t DataAvailable;
+uint8_t BLE_Buffer[20];
+uint8_t BytesReceived;
 /**
  * @}
  */
